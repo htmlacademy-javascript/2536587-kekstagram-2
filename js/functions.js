@@ -31,4 +31,4 @@ function searchNumber(row){
   return parseInt(result,10);
 }
 
-console.log(searchNumber('Всем привет2025'));
+searchNumber('Всем привет2025');
