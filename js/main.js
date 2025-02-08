@@ -80,7 +80,7 @@ const addPhoto = () => {
     photos.push({
       id: i,
       url: `photos/${i}.jpg`,
-      decription: getRandomElement(DESCRIPTION),
+      description: getRandomElement(DESCRIPTION),
       likes: getRandomInteger(like.MIN, like.MAX),
       comments: addComment()
     });
