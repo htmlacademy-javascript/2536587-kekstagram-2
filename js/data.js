@@ -1,6 +1,6 @@
-import {getRandomInteger, getRandomElement} from './util.js';
+import {getRandomInteger, getRandomElement} from './utils.js';
 
-const PHOTO_COUNT = 25;
+const PHOTOS_COUNT = 25;
 
 const NAMES = [
   'Евгений',
@@ -15,7 +15,7 @@ const NAMES = [
   'Тимур'
 ];
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Пейзаж горного озера',
   'Лучи света в воде',
   'Туристы на переднем плане',
@@ -36,7 +36,7 @@ const COMMENTS = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const Like = {
+const Likes = {
   MIN: 15,
   MAX: 200
 };
@@ -46,35 +46,39 @@ const Comments = {
   MAX: 30
 };
 
-const SvgCount = {
+const AvatarIds = {
   MIN: 1,
   MAX: 6
 };
 
 const photos = [];
 
+const createComment = (id) => ({
+  id: id,
+  avatar: `img/avatar-${ getRandomInteger(AvatarIds.MIN, AvatarIds.MAX)}.svg`,
+  message: getRandomElement(COMMENTS),
+  name: getRandomElement(NAMES)
+});
+
 const addComment = () => {
   const feedback = [];
-  for(let i = 0; i < getRandomInteger(Comments.MIN, Comments.MAX); i++){
-    feedback.push(
-      {
-        id: i,
-        avatar: `img/avatar-${ getRandomInteger(SvgCount.MIN, SvgCount.MAX)}.svg`,
-        message: getRandomElement(COMMENTS),
-        name: getRandomElement(NAMES)
-      }
-    );
+  const commentCount = getRandomInteger(Comments.MIN, Comments.MAX);
+
+  for (let i = 0; i < commentCount; i++) {
+    feedback.push(createComment(i));
   }
+
   return feedback;
 };
 
+
 const addPhoto = () => {
-  for(let i = 1; i <= PHOTO_COUNT; i++){
+  for(let i = 1; i <= PHOTOS_COUNT; i++){
     photos.push({
       id: i,
       url: `photos/${i}.jpg`,
-      description: getRandomElement(DESCRIPTION),
-      likes: getRandomInteger(Like.MIN, Like.MAX),
+      description: getRandomElement(DESCRIPTIONS),
+      likes: getRandomInteger(Likes.MIN, Likes.MAX),
       comments: addComment()
     });
   }
