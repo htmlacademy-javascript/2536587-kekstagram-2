@@ -1,9 +1,10 @@
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const photoList = document.querySelector('.pictures');
 
-const renderPhoto = ({url, likes, comments}) => {
+const renderPhoto = ({url, description, likes, comments}) => {
   const photoPreview = pictureTemplate.cloneNode(true);
   photoPreview.querySelector('.picture__img').src = url;
+  photoPreview.querySelector('.picture__img').alt = description;
   photoPreview.querySelector('.picture__likes').textContent = likes;
   photoPreview.querySelector('.picture__comments').textContent = comments.length;
 
