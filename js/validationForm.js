@@ -57,7 +57,7 @@ const error = () => errorMessage;
 const isHashtagsValid = (value) => {
   errorMessage = '';
   const inputText = value.toLowerCase().trim();
-  if (inputText === 0) {
+  if (inputText.length === 0) {
     return true;
   }
 
@@ -108,10 +108,9 @@ const isHashtagsValid = (value) => {
 pristine.addValidator(commentInput, (value) => value.length <= COMMENT_MAX_LENGTH, `Длина комментария не должна превышать ${COMMENT_MAX_LENGTH} символов`);
 pristine.addValidator(hashtagInput, isHashtagsValid, error, false);
 
-initUploadModal();
-
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
 });
 
+initUploadModal();
