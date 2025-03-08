@@ -18,15 +18,12 @@ const onPhotoEditorResetButtonClick = () =>{
 };
 
 const onDocumentKeydown = (evt) =>{
-  if (onEscKeydown(evt)){
-    evt.preventDefault();
-    if(document.activeElement === hashtagInput || document.activeElement === commentInput){
-      evt.stopPropagation();
-    } else{
+  onEscKeydown(evt, () => {
+    if(document.activeElement !== hashtagInput && document.activeElement !== commentInput){
       form.reset();
       closePhotoEditor();
     }
-  }
+  });
 };
 
 function closePhotoEditor () {
