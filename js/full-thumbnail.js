@@ -1,5 +1,5 @@
 import { photos } from './data.js';
-import { clearComments, initializeComments } from './renderComments.js';
+import { clearComments, initializeComments } from './render-comments.js';
 import { onEscKeydown } from './utils.js';
 
 const imageModal = document.querySelector('.big-picture');

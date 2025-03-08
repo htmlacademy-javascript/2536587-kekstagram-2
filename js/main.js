@@ -1,7 +1,8 @@
 import './utils.js';
 import { addPhoto } from './data.js';
 import {renderPhotos} from './thumbnail.js';
-import { openImageModal } from './fullThumbnail.js';
+import { openImageModal } from './full-thumbnail.js';
+import './validation-form.js';
 
 renderPhotos(addPhoto());
 
