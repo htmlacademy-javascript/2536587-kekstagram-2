@@ -3,7 +3,8 @@ import { addPhoto } from './data.js';
 import {renderPhotos} from './thumbnail.js';
 import { openImageModal } from './full-thumbnail.js';
 import './validation-form.js';
-
+import './image-scale-editor.js';
+import './photo-filter.js';
 renderPhotos(addPhoto());
 
 
