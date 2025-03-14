@@ -61,8 +61,6 @@ uploadFileInput.addEventListener('change', () => {
     effectPreviews.forEach((preview) => {
       preview.style.backgroundImage = `url(${fileUrl})`;
     });
-    uploadOverlay.classList.remove('hidden');
-    resetEffects();
   }
 });
 

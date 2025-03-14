@@ -1,4 +1,4 @@
-import { photos } from './data.js';
+import { photos } from './data-loader.js';
 import { clearComments, initializeComments } from './render-comments.js';
 import { onEscKeydown } from './utils.js';
 
