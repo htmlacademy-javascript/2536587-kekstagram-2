@@ -1,12 +1,3 @@
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
-  const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-const getRandomElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
 const onEscKeydown = (evt, cb) => {
   if (evt.key === 'Escape' && cb) {
     cb();
@@ -39,4 +30,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {getRandomInteger, getRandomElement, onEscKeydown, numDecline, showDataError, debounce};
+export {onEscKeydown, numDecline, showDataError, debounce};
