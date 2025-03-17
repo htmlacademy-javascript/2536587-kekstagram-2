@@ -42,7 +42,7 @@ const createMessageHandler = (templateId) => {
   const removeMessage = () => {
     message.remove();
     document.removeEventListener('click', onDocumentClick);
-    document.removeEventListener('keydown', onDocumentKeyDown);
+    document.removeEventListener('keydown', onDocumentEscKeyDown);
   };
 
   function onDocumentClick(evt) {
@@ -51,13 +51,13 @@ const createMessageHandler = (templateId) => {
     }
   }
 
-  function onDocumentKeyDown(evt){
+  function onDocumentEscKeyDown(evt){
     onEscKeydown(evt, removeMessage);
   }
 
   message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
   document.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentKeyDown);
+  document.addEventListener('keydown', onDocumentEscKeyDown);
 };
 
 function onPhotoEditorResetClick () {
