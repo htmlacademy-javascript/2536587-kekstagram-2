@@ -4,8 +4,20 @@ import { debounce } from './utils.js';
 const ACTIVE_BUTTON_CLASS = 'img-filters__button--active';
 const FILTER_DELAY = 500;
 
+const FILTERS = {
+  default: 'filter-default',
+  random: 'filter-random',
+  discussed: 'filter-discussed',
+};
+const SORT_FUNCTION = {
+  random: () => 0.5 - Math.random(),
+  discussed: (a, b) => b.comments.length - a.comments.length,
+};
+const MAX_PICTURE_COUNT = 10;
+
+
 const filterContainer = document.querySelector('.img-filters');
-let currentFilterId = 'filter-default';
+let currentFilterId = FILTERS.default;
 let photoData = [];
 
 const debouncedRenderPhotos = debounce(renderPhotos, FILTER_DELAY);
@@ -29,11 +41,11 @@ function applyPhotoFilter() {
   let filteredPhotos = [...photoData];
 
   switch (currentFilterId) {
-    case 'filter-random':
-      filteredPhotos = filteredPhotos.sort(() => 0.5 - Math.random()).slice(0, 10);
+    case FILTERS.random:
+      filteredPhotos = filteredPhotos.sort(SORT_FUNCTION.random).slice(0, MAX_PICTURE_COUNT);
       break;
-    case 'filter-discussed':
-      filteredPhotos = filteredPhotos.sort((a, b) => b.comments.length - a.comments.length);
+    case FILTERS.discussed:
+      filteredPhotos = filteredPhotos.sort(SORT_FUNCTION.discussed);
       break;
   }
 
