@@ -1,19 +1,28 @@
-import './utils.js';
-import { loadPhotos } from './data-loader.js';
+import {showDataError} from './utils.js';
 import { renderPhotos } from './thumbnail.js';
-import { openImageModal } from './full-thumbnail.js';
+import { openFullThumbnail } from './full-thumbnail.js';
+import './render-comments.js';
 import './validation-form.js';
 import './image-scale-editor.js';
 import './photo-filter.js';
-import './fetch-api.js';
+import './load-photo.js';
+import {getData} from './fetch-api.js';
+import { initializeFilters } from './sort-photos.js';
 
-loadPhotos().then((photos) => {
-  renderPhotos(photos);
+const createGallery = (photos) => {
+  document.querySelector('.pictures').addEventListener('click', (evt) => {
+    const picture = evt.target.closest('[data-picture-id]');
 
-  document.querySelectorAll('.pictures .picture').forEach((item) => {
-    item.addEventListener('click', (evt) => {
+    if (picture) {
       evt.preventDefault();
-      openImageModal(item.dataset.imageId);
-    });
+      openFullThumbnail(picture.dataset.pictureId, photos);
+    }
   });
-});
+};
+
+getData().then((photos) => {
+  window.console.log(photos);
+  renderPhotos(photos);
+  createGallery(photos);
+  initializeFilters(photos);
+}).catch(() => showDataError());

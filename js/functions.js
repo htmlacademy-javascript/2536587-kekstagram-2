@@ -9,7 +9,7 @@ function searchPalindrome(row){
 
   let reversedRow = '';
 
-  for (let i = newRow.length - 1;i >= 0; i--){
+  for (let i = newRow.length - 1; i >= 0; i--){
     reversedRow += newRow[i];
   }
   return newRow === reversedRow;

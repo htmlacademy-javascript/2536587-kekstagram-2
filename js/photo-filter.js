@@ -1,3 +1,5 @@
+import { resetScale } from './image-scale-editor';
+
 const uploadFileInput = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
@@ -6,7 +8,7 @@ const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectValueField = document.querySelector('.effect-level__value');
 const effectRadioButtons = document.querySelectorAll('.effects__radio');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
-const effectPreviews = document.querySelectorAll('.effects__preview');
+
 
 const effects = {
   chrome: { filter: (intensity) => `grayscale(${intensity.toFixed(1)})`, min: 0, max: 1, step: 0.1 },
@@ -43,9 +45,14 @@ const applyEffect = (effect, intensity) => {
 const resetEffects = () => {
   currentEffect = 'none';
   currentIntensity = effects[currentEffect].max;
+
   imagePreview.style.filter = '';
+
   effectValueField.value = currentIntensity;
   effectLevelContainer.classList.add('hidden');
+  document.querySelector('#effect-none').checked = true;
+  effectLevelSlider.noUiSlider.set(currentIntensity);
+
   effectLevelSlider.noUiSlider.updateOptions({
     range: { min: effects[currentEffect].min, max: effects[currentEffect].max },
     step: effects[currentEffect].step,
@@ -53,22 +60,13 @@ const resetEffects = () => {
   });
 };
 
-uploadFileInput.addEventListener('change', () => {
-  const file = uploadFileInput.files[0];
-  if (file) {
-    const fileUrl = URL.createObjectURL(file);
-    imagePreview.src = fileUrl;
-    effectPreviews.forEach((preview) => {
-      preview.style.backgroundImage = `url(${fileUrl})`;
-    });
-  }
-});
-
 effectRadioButtons.forEach((radio) => {
   radio.addEventListener('change', (event) => {
     currentEffect = event.target.value;
     currentIntensity = effects[currentEffect].max;
     effectValueField.value = currentIntensity;
+    imagePreview.style.filter = '';
+
     effectLevelSlider.noUiSlider.updateOptions({
       range: { min: effects[currentEffect].min, max: effects[currentEffect].max },
       step: effects[currentEffect].step,
@@ -88,4 +86,8 @@ effectLevelSlider.noUiSlider.on('update', (values) => {
 uploadCancelButton.addEventListener('click', () => {
   uploadOverlay.classList.add('hidden');
   resetEffects();
+  resetScale();
+  uploadFileInput.value = '';
 });
+
+export {resetEffects};

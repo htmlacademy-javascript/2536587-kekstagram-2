@@ -22,4 +22,21 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
     : genitiveSingular;
 };
 
-export {getRandomInteger, getRandomElement, onEscKeydown, numDecline};
+const showDataError = () => {
+  const template = document.querySelector('#data-error').content.cloneNode(true);
+  const errorElement = template.querySelector('.data-error');
+  document.body.append(errorElement);
+
+  setTimeout(() => errorElement.remove(), 5000);
+};
+
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getRandomInteger, getRandomElement, onEscKeydown, numDecline, showDataError, debounce};

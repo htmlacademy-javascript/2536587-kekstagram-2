@@ -1,4 +1,3 @@
-import { photos } from './data-loader.js';
 import { clearComments, initializeComments } from './render-comments.js';
 import { onEscKeydown } from './utils.js';
 
@@ -8,24 +7,25 @@ const likeCountElement = imageModal.querySelector('.likes-count');
 const imageCaptionElement = imageModal.querySelector('.social__caption');
 const closeButton = imageModal.querySelector('.big-picture__cancel');
 
-
 function onFullThumbnailCancelClick() {
-  closefullThumbnail();
+  closeFullThumbnail();
 }
 
 const closeOnDocumentEscape = (evt) => {
-  onEscKeydown(evt, closefullThumbnail);
+  onEscKeydown(evt, closeFullThumbnail);
 };
 
-function closefullThumbnail() {
+function closeFullThumbnail() {
   clearComments();
   imageModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
+
   document.removeEventListener('keydown', closeOnDocumentEscape);
+  closeButton.removeEventListener('click', onFullThumbnailCancelClick);
 }
 
-const openImageModal = (imageId) => {
-  const selectedImage = photos.find((photo) => photo.id === Number(imageId));
+const openFullThumbnail = (pictureId, photos) => {
+  const selectedImage = photos.find((photo) => photo.id === Number(pictureId));
 
   imageElement.src = selectedImage.url;
   likeCountElement.textContent = selectedImage.likes;
@@ -36,8 +36,7 @@ const openImageModal = (imageId) => {
   imageModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   closeButton.addEventListener('click', onFullThumbnailCancelClick);
-  closeButton.focus();
   document.addEventListener('keydown', closeOnDocumentEscape);
 };
 
-export {openImageModal};
+export { openFullThumbnail };
