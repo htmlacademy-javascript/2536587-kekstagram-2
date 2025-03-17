@@ -18,7 +18,7 @@ const load = (url, method = Method.GET, body = null) =>
     );
 
 const getData = () => load(API_URL_GET);
-const setData = (body) => load(API_URL_POST, Method.POST, body);
+const sendData = (body) => load(API_URL_POST, Method.POST, body);
 
 
-export {getData, setData};
+export {getData, sendData};

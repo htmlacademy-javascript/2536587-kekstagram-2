@@ -1,5 +1,5 @@
 import { onEscKeydown, numDecline } from './utils.js';
-import { setData } from './fetch-api.js';
+import { sendData } from './fetch-api.js';
 import { resetEffects } from './photo-filter.js';
 import { resetScale } from './image-scale-editor.js';
 
@@ -11,7 +11,7 @@ let errorMessage = '';
 let message = null;
 
 const form = document.querySelector('.img-upload__form');
-const page = document.querySelector('body');
+const body = document.querySelector('body');
 const uploadFileControl = document.querySelector('#upload-file');
 const photoEditorForm = document.querySelector('.img-upload__overlay');
 const photoEditorResetButton = document.querySelector('#upload-cancel');
@@ -21,7 +21,7 @@ const submitButton = form.querySelector('#upload-submit');
 
 const toggleFormState = () => {
   photoEditorForm.classList.toggle('hidden');
-  page.classList.toggle('modal-open');
+  body.classList.toggle('modal-open');
 };
 
 const closePhotoEditor = () => {
@@ -126,7 +126,7 @@ const initFormValidation = () => {
       submitButton.disabled = true;
       submitButton.textContent = 'Публикую...';
 
-      setData(new FormData(form))
+      sendData(new FormData(form))
         .then(() => {
           closePhotoEditor();
           createMessageHandler('success');
