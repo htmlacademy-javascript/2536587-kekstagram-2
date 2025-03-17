@@ -1,6 +1,6 @@
-import {onEscKeydown, numDecline} from './utils.js';
+import { onEscKeydown, numDecline } from './utils.js';
 import { setData } from './fetch-api.js';
-import {resetEffects} from './photo-filter.js';
+import { resetEffects } from './photo-filter.js';
 import { resetScale } from './image-scale-editor.js';
 
 const MAX_SYMBOLS = 20;
@@ -28,7 +28,7 @@ const closePhotoEditor = () => {
   resetScale();
   resetEffects();
   toggleFormState();
-  document.removeEventListener('keydown', onDocumentEscKeydown);
+  document.removeEventListener('keydown', onDocumentKeydown);
   photoEditorResetButton.removeEventListener('click', onPhotoEditorResetClick);
   uploadFileControl.value = '';
   form.reset();
@@ -58,15 +58,13 @@ const createMessageHandler = (templateId) => {
   message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
   document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentKeyDown);
-
 };
-
 
 function onPhotoEditorResetClick () {
   closePhotoEditor();
 }
 
-function onDocumentEscKeydown(evt) {
+function onDocumentKeydown(evt) {
   onEscKeydown(evt, () => {
     if (![hashtagInput, commentInput].includes(document.activeElement)) {
       closePhotoEditor();
@@ -146,7 +144,7 @@ const initFormValidation = () => {
   uploadFileControl.addEventListener('change', () => {
     toggleFormState();
     photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
-    document.addEventListener('keydown', onDocumentEscKeydown);
+    document.addEventListener('keydown', onDocumentKeydown);
   });
 };
 

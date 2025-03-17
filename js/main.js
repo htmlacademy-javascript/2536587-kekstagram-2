@@ -5,7 +5,7 @@ import './render-comments.js';
 import './validation-form.js';
 import './image-scale-editor.js';
 import './photo-filter.js';
-import './load-photo.js';
+import './image-preview .js';
 import {getData} from './fetch-api.js';
 import { initializeFilters } from './sort-photos.js';
 
