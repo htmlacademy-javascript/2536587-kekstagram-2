@@ -21,7 +21,6 @@ const createGallery = (photos) => {
 };
 
 getData().then((photos) => {
-  window.console.log(photos);
   renderPhotos(photos);
   createGallery(photos);
   initializeFilters(photos);

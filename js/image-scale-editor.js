@@ -28,12 +28,12 @@ const onBiggerButtonClick = () => {
   }
 };
 
-smallerButton.addEventListener('click', onSmallerButtonClick);
-biggerButton.addEventListener('click', onBiggerButtonClick);
-
 const resetScale = () => {
   scaleValue = MAX_SCALE;
   updateScale();
 };
+
+smallerButton.addEventListener('click', onSmallerButtonClick);
+biggerButton.addEventListener('click', onBiggerButtonClick);
 
 export { resetScale};

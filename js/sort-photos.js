@@ -2,25 +2,24 @@ import { renderPhotos } from './thumbnail.js';
 import { debounce } from './utils.js';
 
 const ACTIVE_BUTTON_CLASS = 'img-filters__button--active';
-const FILTER_DELAY = 500;
-
-const FILTERS = {
-  default: 'filter-default',
-  random: 'filter-random',
-  discussed: 'filter-discussed',
-};
-const SORT_FUNCTION = {
-  random: () => 0.5 - Math.random(),
-  discussed: (a, b) => b.comments.length - a.comments.length,
-};
 const MAX_PICTURE_COUNT = 10;
+
+const Filters = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISSCUSSED: 'filter-discussed',
+};
+const SortFunction = {
+  RANDOM: () => 0.5 - Math.random(),
+  DISSCUSSED: (a, b) => b.comments.length - a.comments.length,
+};
 
 
 const filterContainer = document.querySelector('.img-filters');
-let currentFilterId = FILTERS.default;
+let currentFilterId = Filters.DEFAULT;
 let photoData = [];
 
-const debouncedRenderPhotos = debounce(renderPhotos, FILTER_DELAY);
+const debouncedRenderPhotos = debounce(renderPhotos);
 
 function handleFilterClick(evt) {
   const clickedButton = evt.target.closest('button');
@@ -41,11 +40,11 @@ function applyPhotoFilter() {
   let filteredPhotos = [...photoData];
 
   switch (currentFilterId) {
-    case FILTERS.random:
-      filteredPhotos = filteredPhotos.sort(SORT_FUNCTION.random).slice(0, MAX_PICTURE_COUNT);
+    case Filters.RANDOM:
+      filteredPhotos = filteredPhotos.sort(SortFunction.RANDOM).slice(0, MAX_PICTURE_COUNT);
       break;
-    case FILTERS.discussed:
-      filteredPhotos = filteredPhotos.sort(SORT_FUNCTION.discussed);
+    case Filters.DISSCUSSED:
+      filteredPhotos = filteredPhotos.sort(SortFunction.DISSCUSSED);
       break;
   }
 
