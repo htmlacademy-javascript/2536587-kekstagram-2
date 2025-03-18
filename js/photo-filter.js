@@ -13,7 +13,7 @@ const Effects = {
   NONE: { filter: () => '', min: 0, max: 100, step: 1 },
 };
 
-let currentEffect = 'NONE'; // Эффект по умолчанию
+let currentEffect = 'NONE';
 let currentIntensity = Effects[currentEffect].max;
 
 noUiSlider.create(effectLevelSlider, {
@@ -31,7 +31,7 @@ const applyEffect = (effect, intensity) => {
 };
 
 const resetEffects = () => {
-  currentEffect = 'NONE'; // Ожидаем 'NONE' в верхнем регистре
+  currentEffect = 'NONE';
   currentIntensity = Effects[currentEffect].max;
 
   imagePreview.style.filter = '';
@@ -50,7 +50,7 @@ const resetEffects = () => {
 
 effectRadioButtons.forEach((radio) => {
   radio.addEventListener('change', (event) => {
-    const selectedEffect = event.target.value.toUpperCase(); // Преобразуем в верхний регистр, как в объекте Effects
+    const selectedEffect = event.target.value.toUpperCase();
     currentEffect = selectedEffect;
     currentIntensity = Effects[currentEffect].max;
     effectValueField.value = currentIntensity;
