@@ -14,19 +14,18 @@ const updateScale = () => {
   imagePreview.style.transform = `scale(${scaleValue / 100})`;
 };
 
-const onSmallerButtonClick = () => {
-  if (scaleValue > MIN_SCALE) {
-    scaleValue -= SCALE_STEP;
+const changeScale = (step) => {
+  const newScale = scaleValue + step;
+
+  if (newScale >= MIN_SCALE && newScale <= MAX_SCALE) {
+    scaleValue = newScale;
     updateScale();
   }
 };
 
-const onBiggerButtonClick = () => {
-  if (scaleValue < MAX_SCALE) {
-    scaleValue += SCALE_STEP;
-    updateScale();
-  }
-};
+const onSmallerButtonClick = () => changeScale(-SCALE_STEP);
+const onBiggerButtonClick = () => changeScale(SCALE_STEP);
+
 
 const resetScale = () => {
   scaleValue = MAX_SCALE;
