@@ -19,6 +19,8 @@ const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
 const submitButton = form.querySelector('#upload-submit');
 
+let pristine;
+
 const toggleFormState = () => {
   photoEditorForm.classList.toggle('hidden');
   body.classList.toggle('modal-open');
@@ -27,11 +29,12 @@ const toggleFormState = () => {
 const closePhotoEditor = () => {
   resetScale();
   resetEffects();
+  uploadFileControl.value = '';
+  form.reset();
+  pristine.reset();
   toggleFormState();
   document.removeEventListener('keydown', onDocumentKeydown);
   photoEditorResetButton.removeEventListener('click', onPhotoEditorResetClick);
-  uploadFileControl.value = '';
-  form.reset();
 };
 
 const createMessageHandler = (templateId) => {
@@ -52,7 +55,10 @@ const createMessageHandler = (templateId) => {
   }
 
   function onDocumentEscKeyDown(evt){
-    onEscKeydown(evt, removeMessage);
+    onEscKeydown(evt, () => {
+      removeMessage();
+      closePhotoEditor();
+    });
   }
 
   message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
@@ -102,7 +108,7 @@ const validateHashtags = (value) => {
 };
 
 const initFormValidation = () => {
-  const pristine = new Pristine(form, {
+  pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--error',

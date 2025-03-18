@@ -1,8 +1,3 @@
-import { resetScale } from './image-scale-editor';
-
-const uploadFileInput = document.querySelector('#upload-file');
-const uploadOverlay = document.querySelector('.img-upload__overlay');
-const uploadCancelButton = document.querySelector('.img-upload__cancel');
 const imagePreview = document.querySelector('.img-upload__preview img');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectValueField = document.querySelector('.effect-level__value');
@@ -81,13 +76,6 @@ effectLevelSlider.noUiSlider.on('update', (values) => {
   currentIntensity = parseFloat(values[0]);
   effectValueField.value = currentIntensity;
   applyEffect(currentEffect, currentIntensity);
-});
-
-uploadCancelButton.addEventListener('click', () => {
-  uploadOverlay.classList.add('hidden');
-  resetEffects();
-  resetScale();
-  uploadFileInput.value = '';
 });
 
 export {resetEffects};
