@@ -14,7 +14,7 @@ const Effects = {
   NONE: { filter: () => '', min: 0, max: 100, step: 1 },
 };
 
-let currentEffect = 'none';
+let currentEffect = 'NONE';
 let currentIntensity = Effects[currentEffect].max;
 
 noUiSlider.create(effectLevelSlider, {
