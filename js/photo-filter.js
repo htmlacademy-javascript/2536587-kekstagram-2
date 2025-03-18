@@ -4,7 +4,6 @@ const effectValueField = document.querySelector('.effect-level__value');
 const effectRadioButtons = document.querySelectorAll('.effects__radio');
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
 
-
 const Effects = {
   CHROME: { filter: (intensity) => `grayscale(${intensity.toFixed(1)})`, min: 0, max: 1, step: 0.1 },
   SEPIA: { filter: (intensity) => `sepia(${intensity.toFixed(1)})`, min: 0, max: 1, step: 0.1 },
@@ -14,7 +13,7 @@ const Effects = {
   NONE: { filter: () => '', min: 0, max: 100, step: 1 },
 };
 
-let currentEffect = 'NONE';
+let currentEffect = 'NONE'; // Эффект по умолчанию
 let currentIntensity = Effects[currentEffect].max;
 
 noUiSlider.create(effectLevelSlider, {
@@ -32,7 +31,7 @@ const applyEffect = (effect, intensity) => {
 };
 
 const resetEffects = () => {
-  currentEffect = 'none';
+  currentEffect = 'NONE'; // Ожидаем 'NONE' в верхнем регистре
   currentIntensity = Effects[currentEffect].max;
 
   imagePreview.style.filter = '';
@@ -51,7 +50,8 @@ const resetEffects = () => {
 
 effectRadioButtons.forEach((radio) => {
   radio.addEventListener('change', (event) => {
-    currentEffect = event.target.value;
+    const selectedEffect = event.target.value.toUpperCase(); // Преобразуем в верхний регистр, как в объекте Effects
+    currentEffect = selectedEffect;
     currentIntensity = Effects[currentEffect].max;
     effectValueField.value = currentIntensity;
     imagePreview.style.filter = '';
@@ -59,9 +59,10 @@ effectRadioButtons.forEach((radio) => {
     effectLevelSlider.noUiSlider.updateOptions({
       range: { min: Effects[currentEffect].min, max: Effects[currentEffect].max },
       step: Effects[currentEffect].step,
-      start: Effects[currentEffect].max,
+      start: currentIntensity,
     });
-    effectLevelContainer.classList.toggle('hidden', currentEffect === 'none');
+
+    effectLevelContainer.classList.toggle('hidden', currentEffect === 'NONE');
     applyEffect(currentEffect, currentIntensity);
   });
 });
@@ -73,9 +74,9 @@ effectLevelSlider.noUiSlider.on('update', (values) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (currentEffect === 'none') {
+  if (currentEffect === 'NONE') {
     effectLevelContainer.classList.add('hidden');
   }
 });
 
-export {resetEffects};
+export { resetEffects };
