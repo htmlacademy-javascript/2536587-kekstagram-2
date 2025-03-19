@@ -42,10 +42,24 @@ const createMessageHandler = (templateId) => {
   message = template.querySelector(`.${templateId}`);
   document.body.append(message);
 
+  if (templateId === 'error' || templateId === 'success') {
+    photoEditorForm.classList.add('hidden');
+  }
+
   const removeMessage = () => {
-    message.remove();
+    if (message) {
+      message.remove();
+      message = null;
+    }
     document.removeEventListener('click', onDocumentClick);
     document.removeEventListener('keydown', onDocumentEscKeyDown);
+
+    if (templateId === 'error' || templateId === 'success') {
+      photoEditorForm.classList.remove('hidden');
+
+      document.addEventListener('keydown', onDocumentKeydown);
+      photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
+    }
   };
 
   function onDocumentClick(evt) {
@@ -54,10 +68,9 @@ const createMessageHandler = (templateId) => {
     }
   }
 
-  function onDocumentEscKeyDown(evt){
+  function onDocumentEscKeyDown(evt) {
     onEscKeydown(evt, () => {
       removeMessage();
-      closePhotoEditor();
     });
   }
 
@@ -66,7 +79,8 @@ const createMessageHandler = (templateId) => {
   document.addEventListener('keydown', onDocumentEscKeyDown);
 };
 
-function onPhotoEditorResetClick () {
+
+function onPhotoEditorResetClick() {
   closePhotoEditor();
 }
 
@@ -114,12 +128,14 @@ const initFormValidation = () => {
     errorClass: 'img-upload__field-wrapper--error',
   });
 
-  pristine.addValidator(commentInput,
+  pristine.addValidator(
+    commentInput,
     (value) => value.length <= COMMENT_MAX_LENGTH,
     `Длина комментария не должна превышать ${COMMENT_MAX_LENGTH} символов`
   );
 
-  pristine.addValidator(hashtagInput,
+  pristine.addValidator(
+    hashtagInput,
     validateHashtags,
     () => errorMessage,
     false
@@ -134,7 +150,6 @@ const initFormValidation = () => {
 
       sendData(new FormData(form))
         .then(() => {
-          closePhotoEditor();
           createMessageHandler('success');
         })
         .catch(() => {
