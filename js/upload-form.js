@@ -10,6 +10,8 @@ const uploadFileControl = document.querySelector('#upload-file');
 const photoEditorForm = document.querySelector('.img-upload__overlay');
 const photoEditorResetButton = document.querySelector('#upload-cancel');
 const submitButton = form.querySelector('#upload-submit');
+const hashtagInput = form.querySelector('.text__hashtags');
+const commentInput = form.querySelector('.text__description');
 
 const pristine = initValidation();
 let message = null;
@@ -43,15 +45,15 @@ const removeMessage = () => {
 function onDocumentClick (evt) {
   if (!evt.target.closest(`.${message.classList[0]}__inner`)) {
     removeMessage();
-    closePhotoEditor();
   }
 }
 
-function onDocumentEscKeyDown (evt) {
-  onEscKeydown(evt, () => {
+function onDocumentEscKeyDown(evt) {
+  if (message && (evt.key === 'Escape' || evt.key === 'Esc')) {
     removeMessage();
-    closePhotoEditor();
-  });
+  } else if (hashtagInput !== document.activeElement && commentInput !== document.activeElement) {
+    onEscKeydown(evt, closePhotoEditor);
+  }
 }
 
 const createMessageHandler = (templateId) => {
@@ -59,11 +61,8 @@ const createMessageHandler = (templateId) => {
   message = template.querySelector(`.${templateId}`);
   document.body.append(message);
 
-  closePhotoEditor();
-
   message.querySelector(`.${templateId}__button`).addEventListener('click', () => {
     removeMessage();
-    closePhotoEditor();
   });
 
   document.addEventListener('click', onDocumentClick);
@@ -72,7 +71,10 @@ const createMessageHandler = (templateId) => {
 
 const onPhotoEditorResetClick = () => closePhotoEditor();
 
-function onDocumentKeydown (evt) {
+function onDocumentKeydown(evt) {
+  if (hashtagInput === document.activeElement || commentInput === document.activeElement) {
+    return;
+  }
   onEscKeydown(evt, closePhotoEditor);
 }
 
@@ -84,8 +86,13 @@ form.addEventListener('submit', (evt) => {
     submitButton.textContent = 'Публикую...';
 
     sendData(new FormData(form))
-      .then(() => createMessageHandler('success'))
-      .catch(() => createMessageHandler('error'))
+      .then(() => {
+        createMessageHandler('success');
+        closePhotoEditor();
+      })
+      .catch(() => {
+        createMessageHandler('error');
+      })
       .finally(() => {
         submitButton.disabled = false;
         submitButton.textContent = 'Опубликовать';
