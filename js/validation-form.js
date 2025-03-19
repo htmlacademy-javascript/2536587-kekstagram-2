@@ -1,96 +1,15 @@
-import { onEscKeydown, numDecline } from './utils.js';
-import { sendData } from './fetch-api.js';
-import { resetEffects } from './photo-filter.js';
-import { resetScale } from './image-scale-editor.js';
+import { numDecline } from './utils.js';
 
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 const COMMENT_MAX_LENGTH = 140;
 
+let pristine;
 let errorMessage = '';
-let message = null;
 
 const form = document.querySelector('.img-upload__form');
-const body = document.querySelector('body');
-const uploadFileControl = document.querySelector('#upload-file');
-const photoEditorForm = document.querySelector('.img-upload__overlay');
-const photoEditorResetButton = document.querySelector('#upload-cancel');
 const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
-const submitButton = form.querySelector('#upload-submit');
-
-let pristine;
-
-const toggleFormState = () => {
-  photoEditorForm.classList.toggle('hidden');
-  body.classList.toggle('modal-open');
-};
-
-const closePhotoEditor = () => {
-  resetScale();
-  resetEffects();
-  uploadFileControl.value = '';
-  form.reset();
-  pristine.reset();
-  toggleFormState();
-  document.removeEventListener('keydown', onDocumentKeydown);
-  photoEditorResetButton.removeEventListener('click', onPhotoEditorResetClick);
-};
-
-const createMessageHandler = (templateId) => {
-  const template = document.querySelector(`#${templateId}`).content.cloneNode(true);
-  message = template.querySelector(`.${templateId}`);
-  document.body.append(message);
-
-  if (templateId === 'error' || templateId === 'success') {
-    photoEditorForm.classList.add('hidden');
-  }
-
-  const removeMessage = () => {
-    if (message) {
-      message.remove();
-      message = null;
-    }
-    document.removeEventListener('click', onDocumentClick);
-    document.removeEventListener('keydown', onDocumentEscKeyDown);
-
-    if (templateId === 'error' || templateId === 'success') {
-      photoEditorForm.classList.remove('hidden');
-
-      document.addEventListener('keydown', onDocumentKeydown);
-      photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
-    }
-  };
-
-  function onDocumentClick(evt) {
-    if (!evt.target.closest(`.${templateId}__inner`)) {
-      removeMessage();
-    }
-  }
-
-  function onDocumentEscKeyDown(evt) {
-    onEscKeydown(evt, () => {
-      removeMessage();
-    });
-  }
-
-  message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
-  document.addEventListener('click', onDocumentClick);
-  document.addEventListener('keydown', onDocumentEscKeyDown);
-};
-
-
-function onPhotoEditorResetClick() {
-  closePhotoEditor();
-}
-
-function onDocumentKeydown(evt) {
-  onEscKeydown(evt, () => {
-    if (![hashtagInput, commentInput].includes(document.activeElement)) {
-      closePhotoEditor();
-    }
-  });
-}
 
 const validateHashtags = (value) => {
   errorMessage = '';
@@ -121,7 +40,7 @@ const validateHashtags = (value) => {
   });
 };
 
-const initFormValidation = () => {
+const initValidation = () => {
   pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
@@ -141,32 +60,7 @@ const initFormValidation = () => {
     false
   );
 
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    if (pristine.validate()) {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Публикую...';
-
-      sendData(new FormData(form))
-        .then(() => {
-          createMessageHandler('success');
-        })
-        .catch(() => {
-          createMessageHandler('error');
-        })
-        .finally(() => {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Опубликовать';
-        });
-    }
-  });
-
-  uploadFileControl.addEventListener('change', () => {
-    toggleFormState();
-    photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
-    document.addEventListener('keydown', onDocumentKeydown);
-  });
+  return pristine;
 };
 
-initFormValidation();
+export { initValidation };
