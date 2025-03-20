@@ -41,6 +41,12 @@ function onPhotoEditorResetClick() {
 }
 
 function onDocumentKeydown(evt) {
+  const error = document.querySelector('.error');
+  if (error) {
+    onEscKeydown(evt, () => error.remove());
+    return;
+  }
+
   onEscKeydown(evt, () => {
     if (![hashtagInput, commentInput].includes(document.activeElement)) {
       closePhotoEditor();

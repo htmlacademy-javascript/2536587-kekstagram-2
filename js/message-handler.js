@@ -23,7 +23,10 @@ const showMessage = (templateId) => {
   }
 
   function onDocumentEscKeyDown(evt) {
-    onEscKeydown(evt, removeMessage);
+    if (message) {
+      evt.stopPropagation();
+      onEscKeydown(evt, removeMessage);
+    }
   }
 
   message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
