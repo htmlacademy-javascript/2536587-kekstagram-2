@@ -7,7 +7,7 @@ import './image-scale-editor.js';
 import './photo-filter.js';
 import './image-preview .js';
 import {getData} from './fetch-api.js';
-import './upload-form.js';
+import './message-handler.js';
 import { initializeFilters } from './sort-photos.js';
 
 const createGallery = (photos) => {

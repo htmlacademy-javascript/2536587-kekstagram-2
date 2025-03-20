@@ -1,24 +1,59 @@
-import { numDecline } from './utils.js';
+import { onEscKeydown, numDecline } from './utils.js';
+import { sendData } from './fetch-api.js';
+import { resetEffects } from './photo-filter.js';
+import { resetScale } from './image-scale-editor.js';
+import { showMessage } from './message-handler.js';
 
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 const COMMENT_MAX_LENGTH = 140;
 
-let pristine;
 let errorMessage = '';
+let pristine;
 
 const form = document.querySelector('.img-upload__form');
+const body = document.querySelector('body');
+const uploadFileControl = document.querySelector('#upload-file');
+const photoEditorForm = document.querySelector('.img-upload__overlay');
+const photoEditorResetButton = document.querySelector('#upload-cancel');
 const hashtagInput = form.querySelector('.text__hashtags');
 const commentInput = form.querySelector('.text__description');
+const submitButton = form.querySelector('#upload-submit');
+
+const toggleFormState = () => {
+  photoEditorForm.classList.toggle('hidden');
+  body.classList.toggle('modal-open');
+};
+
+const closePhotoEditor = () => {
+  resetScale();
+  resetEffects();
+  uploadFileControl.value = '';
+  form.reset();
+  pristine.reset();
+  toggleFormState();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  photoEditorResetButton.removeEventListener('click', onPhotoEditorResetClick);
+};
+
+function onPhotoEditorResetClick() {
+  closePhotoEditor();
+}
+
+function onDocumentKeydown(evt) {
+  onEscKeydown(evt, () => {
+    if (![hashtagInput, commentInput].includes(document.activeElement)) {
+      closePhotoEditor();
+    }
+  });
+}
 
 const validateHashtags = (value) => {
   errorMessage = '';
   const inputText = value.toLowerCase().trim();
-
   if (!inputText) {
     return true;
   }
-
   const inputArray = inputText.split(/\s+/);
   const uniqueHashtags = new Set(inputArray.map((item) => item.toLowerCase()));
 
@@ -40,7 +75,7 @@ const validateHashtags = (value) => {
   });
 };
 
-const initValidation = () => {
+const initFormValidation = () => {
   pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
@@ -60,7 +95,33 @@ const initValidation = () => {
     false
   );
 
-  return pristine;
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    if (pristine.validate()) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Публикую...';
+
+      sendData(new FormData(form))
+        .then(() => {
+          showMessage('success');
+          closePhotoEditor();
+        })
+        .catch(() => {
+          showMessage('error');
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Опубликовать';
+        });
+    }
+  });
+
+  uploadFileControl.addEventListener('change', () => {
+    toggleFormState();
+    photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
+    document.addEventListener('keydown', onDocumentKeydown);
+  });
 };
 
-export { initValidation };
+initFormValidation();
