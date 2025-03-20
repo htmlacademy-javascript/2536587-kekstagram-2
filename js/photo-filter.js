@@ -1,8 +1,8 @@
-const imagePreview = document.querySelector('.img-upload__preview img');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
-const effectValueField = document.querySelector('.effect-level__value');
-const effectRadioButtons = document.querySelectorAll('.effects__radio');
-const effectLevelContainer = document.querySelector('.img-upload__effect-level');
+const imagePreviewElement = document.querySelector('.img-upload__preview img');
+const effectLevelSliderElement = document.querySelector('.effect-level__slider');
+const effectValueElement = document.querySelector('.effect-level__value');
+const effectRadioElements = document.querySelectorAll('.effects__radio');
+const effectLevelContainerElement = document.querySelector('.img-upload__effect-level');
 
 const Effects = {
   CHROME: { filter: (intensity) => `grayscale(${intensity.toFixed(1)})`, min: 0, max: 1, step: 0.1 },
@@ -16,7 +16,7 @@ const Effects = {
 let currentEffect = 'NONE';
 let currentIntensity = Effects[currentEffect].max;
 
-noUiSlider.create(effectLevelSlider, {
+noUiSlider.create(effectLevelSliderElement, {
   start: currentIntensity,
   range: {
     min: Effects[currentEffect].min,
@@ -27,55 +27,54 @@ noUiSlider.create(effectLevelSlider, {
 });
 
 const applyEffect = (effect, intensity) => {
-  imagePreview.style.filter = Effects[effect].filter ? Effects[effect].filter(intensity) : '';
+  imagePreviewElement.style.filter = Effects[effect].filter ? Effects[effect].filter(intensity) : '';
 };
 
 const resetEffects = () => {
   currentEffect = 'NONE';
   currentIntensity = Effects[currentEffect].max;
 
-  imagePreview.style.filter = '';
+  imagePreviewElement.style.filter = '';
 
-  effectValueField.value = currentIntensity;
-  effectLevelContainer.classList.add('hidden');
+  effectValueElement.value = currentIntensity;
+  effectLevelContainerElement.classList.add('hidden');
   document.querySelector('#effect-none').checked = true;
-  effectLevelSlider.noUiSlider.set(currentIntensity);
+  effectLevelSliderElement.noUiSlider.set(currentIntensity);
 
-  effectLevelSlider.noUiSlider.updateOptions({
+  effectLevelSliderElement.noUiSlider.updateOptions({
     range: { min: Effects[currentEffect].min, max: Effects[currentEffect].max },
     step: Effects[currentEffect].step,
     start: Effects[currentEffect].max,
   });
 };
 
-effectRadioButtons.forEach((radio) => {
+effectRadioElements.forEach((radio) => {
   radio.addEventListener('change', (event) => {
-    const selectedEffect = event.target.value.toUpperCase();
-    currentEffect = selectedEffect;
+    currentEffect = event.target.value.toUpperCase();
     currentIntensity = Effects[currentEffect].max;
-    effectValueField.value = currentIntensity;
-    imagePreview.style.filter = '';
+    effectValueElement.value = currentIntensity;
+    imagePreviewElement.style.filter = '';
 
-    effectLevelSlider.noUiSlider.updateOptions({
+    effectLevelSliderElement.noUiSlider.updateOptions({
       range: { min: Effects[currentEffect].min, max: Effects[currentEffect].max },
       step: Effects[currentEffect].step,
       start: currentIntensity,
     });
 
-    effectLevelContainer.classList.toggle('hidden', currentEffect === 'NONE');
+    effectLevelContainerElement.classList.toggle('hidden', currentEffect === 'NONE');
     applyEffect(currentEffect, currentIntensity);
   });
 });
 
-effectLevelSlider.noUiSlider.on('update', (values) => {
+effectLevelSliderElement.noUiSlider.on('update', (values) => {
   currentIntensity = parseFloat(values[0]);
-  effectValueField.value = currentIntensity;
+  effectValueElement.value = currentIntensity;
   applyEffect(currentEffect, currentIntensity);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
   if (currentEffect === 'NONE') {
-    effectLevelContainer.classList.add('hidden');
+    effectLevelContainerElement.classList.add('hidden');
   }
 });
 

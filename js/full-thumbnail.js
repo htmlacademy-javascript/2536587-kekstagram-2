@@ -1,11 +1,11 @@
 import { clearComments, initializeComments } from './render-comments.js';
 import { onEscKeydown } from './utils.js';
 
-const imageModal = document.querySelector('.big-picture');
-const imageElement = imageModal.querySelector('.big-picture__img img');
-const likeCountElement = imageModal.querySelector('.likes-count');
-const imageCaptionElement = imageModal.querySelector('.social__caption');
-const closeButton = imageModal.querySelector('.big-picture__cancel');
+const imageModalElement = document.querySelector('.big-picture');
+const imageElement = imageModalElement.querySelector('.big-picture__img img');
+const likeCountElement = imageModalElement.querySelector('.likes-count');
+const imageCaptionElement = imageModalElement.querySelector('.social__caption');
+const closeButtonElement = imageModalElement.querySelector('.big-picture__cancel');
 
 function onFullThumbnailCancelClick() {
   closeFullThumbnail();
@@ -17,11 +17,11 @@ const closeOnDocumentEscape = (evt) => {
 
 function closeFullThumbnail() {
   clearComments();
-  imageModal.classList.add('hidden');
+  imageModalElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
   document.removeEventListener('keydown', closeOnDocumentEscape);
-  closeButton.removeEventListener('click', onFullThumbnailCancelClick);
+  closeButtonElement.removeEventListener('click', onFullThumbnailCancelClick);
 }
 
 const openFullThumbnail = (pictureId, photos) => {
@@ -33,9 +33,9 @@ const openFullThumbnail = (pictureId, photos) => {
 
   initializeComments(selectedImage.comments);
 
-  imageModal.classList.remove('hidden');
+  imageModalElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  closeButton.addEventListener('click', onFullThumbnailCancelClick);
+  closeButtonElement.addEventListener('click', onFullThumbnailCancelClick);
   document.addEventListener('keydown', closeOnDocumentEscape);
 };
 

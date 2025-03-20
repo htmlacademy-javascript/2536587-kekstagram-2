@@ -3,8 +3,8 @@ import { onEscKeydown } from './utils.js';
 let message = null;
 
 const showMessage = (templateId) => {
-  const template = document.querySelector(`#${templateId}`).content.cloneNode(true);
-  message = template.querySelector(`.${templateId}`);
+  const templateElement = document.querySelector(`#${templateId}`).content.cloneNode(true);
+  message = templateElement.querySelector(`.${templateId}`);
   document.body.append(message);
 
   const removeMessage = () => {

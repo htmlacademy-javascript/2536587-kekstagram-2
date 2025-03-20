@@ -11,29 +11,29 @@ const COMMENT_MAX_LENGTH = 140;
 let errorMessage = '';
 let pristine;
 
-const form = document.querySelector('.img-upload__form');
-const body = document.querySelector('body');
-const uploadFileControl = document.querySelector('#upload-file');
-const photoEditorForm = document.querySelector('.img-upload__overlay');
-const photoEditorResetButton = document.querySelector('#upload-cancel');
-const hashtagInput = form.querySelector('.text__hashtags');
-const commentInput = form.querySelector('.text__description');
-const submitButton = form.querySelector('#upload-submit');
+const formElement = document.querySelector('.img-upload__form');
+const bodyElement = document.querySelector('body');
+const uploadFileControlElement = document.querySelector('#upload-file');
+const photoEditorFormElement = document.querySelector('.img-upload__overlay');
+const photoEditorResetButtonElement = document.querySelector('#upload-cancel');
+const hashtagInputElement = formElement.querySelector('.text__hashtags');
+const commentInputElement = formElement.querySelector('.text__description');
+const submitButtonElement = formElement.querySelector('#upload-submit');
 
 const toggleFormState = () => {
-  photoEditorForm.classList.toggle('hidden');
-  body.classList.toggle('modal-open');
+  photoEditorFormElement.classList.toggle('hidden');
+  bodyElement.classList.toggle('modal-open');
 };
 
 const closePhotoEditor = () => {
   resetScale();
   resetEffects();
-  uploadFileControl.value = '';
-  form.reset();
+  uploadFileControlElement.value = '';
+  formElement.reset();
   pristine.reset();
   toggleFormState();
   document.removeEventListener('keydown', onDocumentKeydown);
-  photoEditorResetButton.removeEventListener('click', onPhotoEditorResetClick);
+  photoEditorResetButtonElement.removeEventListener('click', onPhotoEditorResetClick);
 };
 
 function onPhotoEditorResetClick() {
@@ -48,7 +48,7 @@ function onDocumentKeydown(evt) {
   }
 
   onEscKeydown(evt, () => {
-    if (![hashtagInput, commentInput].includes(document.activeElement)) {
+    if (![hashtagInputElement, commentInputElement].includes(document.activeElement)) {
       closePhotoEditor();
     }
   });
@@ -82,33 +82,33 @@ const validateHashtags = (value) => {
 };
 
 const initFormValidation = () => {
-  pristine = new Pristine(form, {
+  pristine = new Pristine(formElement, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
     errorClass: 'img-upload__field-wrapper--error',
   });
 
   pristine.addValidator(
-    commentInput,
+    commentInputElement,
     (value) => value.length <= COMMENT_MAX_LENGTH,
     `Длина комментария не должна превышать ${COMMENT_MAX_LENGTH} символов`
   );
 
   pristine.addValidator(
-    hashtagInput,
+    hashtagInputElement,
     validateHashtags,
     () => errorMessage,
     false
   );
 
-  form.addEventListener('submit', (evt) => {
+  formElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     if (pristine.validate()) {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Публикую...';
+      submitButtonElement.disabled = true;
+      submitButtonElement.textContent = 'Публикую...';
 
-      sendData(new FormData(form))
+      sendData(new FormData(formElement))
         .then(() => {
           showMessage('success');
           closePhotoEditor();
@@ -117,15 +117,15 @@ const initFormValidation = () => {
           showMessage('error');
         })
         .finally(() => {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Опубликовать';
+          submitButtonElement.disabled = false;
+          submitButtonElement.textContent = 'Опубликовать';
         });
     }
   });
 
-  uploadFileControl.addEventListener('change', () => {
+  uploadFileControlElement.addEventListener('change', () => {
     toggleFormState();
-    photoEditorResetButton.addEventListener('click', onPhotoEditorResetClick);
+    photoEditorResetButtonElement.addEventListener('click', onPhotoEditorResetClick);
     document.addEventListener('keydown', onDocumentKeydown);
   });
 };
