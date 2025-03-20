@@ -1,5 +1,5 @@
-const API_URL_GET = 'https://31.javascript.htmlacademy.pro/kekstagram/data';
-const API_URL_POST = 'https://31.javascript.htmlacademy.pro/kekstagram';
+const API_URL_GET = 'https://31.javascript.htmlacademy.pro/kekstagram/data/';
+const API_URL_POST = 'https://31.javascript.htmlacademy.pro/kekstagram/';
 
 const Method = {
   GET: 'GET',
