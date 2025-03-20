@@ -2,14 +2,14 @@ const pictureTemplateElement = document.querySelector('#picture').content.queryS
 const photoListElement = document.querySelector('.pictures');
 
 const renderPhoto = ({id, url, description, likes, comments}) => {
-  const photoPreview = pictureTemplateElement.cloneNode(true);
-  photoPreview.dataset.pictureId = id;
-  photoPreview.querySelector('.picture__img').src = url;
-  photoPreview.querySelector('.picture__img').alt = description;
-  photoPreview.querySelector('.picture__likes').textContent = likes;
-  photoPreview.querySelector('.picture__comments').textContent = comments.length;
+  const photoPreviewElement = pictureTemplateElement.cloneNode(true);
+  photoPreviewElement.dataset.pictureId = id;
+  photoPreviewElement.querySelector('.picture__img').src = url;
+  photoPreviewElement.querySelector('.picture__img').alt = description;
+  photoPreviewElement.querySelector('.picture__likes').textContent = likes;
+  photoPreviewElement.querySelector('.picture__comments').textContent = comments.length;
 
-  return photoPreview;
+  return photoPreviewElement;
 };
 
 const renderPhotos = (photos) => {

@@ -1,16 +1,16 @@
 import { onEscKeydown } from './utils.js';
 
-let message = null;
+let messageElement = null;
 
 const showMessage = (templateId) => {
   const templateElement = document.querySelector(`#${templateId}`).content.cloneNode(true);
-  message = templateElement.querySelector(`.${templateId}`);
-  document.body.append(message);
+  messageElement = templateElement.querySelector(`.${templateId}`);
+  document.body.append(messageElement);
 
   const removeMessage = () => {
-    if (message) {
-      message.remove();
-      message = null;
+    if (messageElement) {
+      messageElement.remove();
+      messageElement = null;
     }
     document.removeEventListener('click', onDocumentClick);
     document.removeEventListener('keydown', onDocumentEscKeyDown);
@@ -23,13 +23,13 @@ const showMessage = (templateId) => {
   }
 
   function onDocumentEscKeyDown(evt) {
-    if (message) {
+    if (messageElement) {
       evt.stopPropagation();
       onEscKeydown(evt, removeMessage);
     }
   }
 
-  message.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
+  messageElement.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
   document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentEscKeyDown);
 };
