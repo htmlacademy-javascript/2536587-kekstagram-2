@@ -11,8 +11,8 @@ const Filters = {
 };
 
 const SortFunction = {
-  RANDOM: () => Math.random() - 0.5,
-  DISCUSSED: (a, b) => b.comments.length - a.comments.length,
+  sortRandomly: () => Math.random() - 0.5,
+  sortByDiscussionCount : (a, b) => b.comments.length - a.comments.length,
 };
 
 const filterContainer = document.querySelector('.img-filters');
@@ -25,15 +25,15 @@ const applyPhotoFilter = () => {
   let filteredPhotos = [...photoData];
 
   if (currentFilterId === Filters.RANDOM) {
-    filteredPhotos = filteredPhotos.sort(SortFunction.RANDOM).slice(0, MAX_PICTURE_COUNT);
+    filteredPhotos = filteredPhotos.sort(SortFunction.sortRandomly).slice(0, MAX_PICTURE_COUNT);
   } else if (currentFilterId === Filters.DISCUSSED) {
-    filteredPhotos = filteredPhotos.sort(SortFunction.DISCUSSED);
+    filteredPhotos = filteredPhotos.sort(SortFunction.sortByDiscussionCount);
   }
 
   debouncedRenderPhotos(filteredPhotos);
 };
 
-const handleFilterClick = (evt) => {
+const onFilterContainerClick = (evt) => {
   const clickedButton = evt.target.closest('button');
 
   if (!clickedButton || clickedButton.classList.contains(ACTIVE_BUTTON_CLASS)) {
@@ -50,7 +50,7 @@ const handleFilterClick = (evt) => {
 const initializeFilters = (photos) => {
   photoData = photos;
   filterContainer.classList.remove('img-filters--inactive');
-  filterContainer.addEventListener('click', handleFilterClick);
+  filterContainer.addEventListener('click', onFilterContainerClick);
 };
 
 export { initializeFilters };

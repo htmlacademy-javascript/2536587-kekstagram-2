@@ -60,17 +60,17 @@ const validateHashtags = (value) => {
   if (!inputText) {
     return true;
   }
-  const inputArray = inputText.split(/\s+/);
-  const uniqueHashtags = new Set(inputArray.map((item) => item.toLowerCase()));
+  const hastags = inputText.split(/\s+/);
+  const uniqueHashtags = new Set(hastags.map((item) => item.toLowerCase()));
 
   const validationRules = [
-    { check: inputArray.some((item) => item === '#'), error: 'Хештег не может состоять только из решетки' },
-    { check: inputArray.some((item) => item.slice(1).includes('#')), error: 'Хештеги разделяются пробелами' },
-    { check: inputArray.some((item) => !item.startsWith('#')), error: 'Хештег должен начинаться с символа #' },
-    { check: uniqueHashtags.size !== inputArray.length, error: 'Хештеги не должны повторяться' },
-    { check: inputArray.some((item) => item.length > MAX_SYMBOLS), error: 'Хештег не может быть больше 20 символов' },
-    { check: inputArray.length > MAX_HASHTAGS, error: `Нельзя указать больше ${MAX_HASHTAGS} ${numDecline(MAX_HASHTAGS, 'хештега', 'хештегов', 'хештегов')}` },
-    { check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)), error: 'Хэштег содержит недопустимые символы' },
+    { check: hastags.some((item) => item === '#'), error: 'Хештег не может состоять только из решетки' },
+    { check: hastags.some((item) => item.slice(1).includes('#')), error: 'Хештеги разделяются пробелами' },
+    { check: hastags.some((item) => !item.startsWith('#')), error: 'Хештег должен начинаться с символа #' },
+    { check: uniqueHashtags.size !== hastags.length, error: 'Хештеги не должны повторяться' },
+    { check: hastags.some((item) => item.length > MAX_SYMBOLS), error: 'Хештег не может быть больше 20 символов' },
+    { check: hastags.length > MAX_HASHTAGS, error: `Нельзя указать больше ${MAX_HASHTAGS} ${numDecline(MAX_HASHTAGS, 'хештега', 'хештегов', 'хештегов')}` },
+    { check: hastags.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)), error: 'Хэштег содержит недопустимые символы' },
   ];
 
   return validationRules.every((rule) => {
