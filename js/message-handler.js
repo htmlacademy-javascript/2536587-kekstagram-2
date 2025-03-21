@@ -7,7 +7,7 @@ const showMessage = (templateId) => {
   messageElement = templateElement.querySelector(`.${templateId}`);
   document.body.append(messageElement);
 
-  const removeMessage = () => {
+  const onMessageRemove = () => {
     if (messageElement) {
       messageElement.remove();
       messageElement = null;
@@ -18,18 +18,18 @@ const showMessage = (templateId) => {
 
   function onDocumentClick(evt) {
     if (!evt.target.closest(`.${templateId}__inner`)) {
-      removeMessage();
+      onMessageRemove ();
     }
   }
 
   function onDocumentEscKeyDown(evt) {
     if (messageElement) {
       evt.stopPropagation();
-      onEscKeydown(evt, removeMessage);
+      onEscKeydown(evt, onMessageRemove);
     }
   }
 
-  messageElement.querySelector(`.${templateId}__button`).addEventListener('click', removeMessage);
+  messageElement.querySelector(`.${templateId}__button`).addEventListener('click', onMessageRemove);
   document.addEventListener('click', onDocumentClick);
   document.addEventListener('keydown', onDocumentEscKeyDown);
 };
